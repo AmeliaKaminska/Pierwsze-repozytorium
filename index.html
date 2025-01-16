@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>test</title>
+    <title>Formularz kontaktowy z walidacją</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -39,7 +39,7 @@
         button:hover {
             background-color: #0056b3;
         }
-        
+
         .error {
             color: red;
             font-size: 0.9em;
@@ -60,14 +60,56 @@
     <form id="kontaktForm">
         <label for="imie">Imię:</label>
         <input type="text" id="imie" name="imie">
+
         <label for="email">E-mail:</label>
         <input type="text" id="email" name="email">
         <div id="emailError" class="error"></div>
+
         <label for="telefon">Numer telefonu:</label>
         <input type="text" id="telefon" name="telefon" placeholder="XXX-XXX-XXX">
         <div id="telefonError" class="error"></div>
+
         <label for="wiadomosc">Wiadomość:</label>
         <textarea id="wiadomosc" name="wiadomosc" rows="5"></textarea>
+
         <button type="button" id="wyslij">Wyślij</button>
     </form>
 
+    <script>
+        document.getElementById('wyslij').addEventListener('click', function() {
+            const imie = document.getElementById('imie').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const telefon = document.getElementById('telefon').value.trim();
+            const wiadomosc = document.getElementById('wiadomosc').value.trim();
+            const emailErrorDiv = document.getElementById('emailError');
+            const telefonErrorDiv = document.getElementById('telefonError');
+            emailErrorDiv.textContent = '';
+            telefonErrorDiv.textContent = '';
+
+            let isValid = true;
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) 
+            {
+                emailErrorDiv.textContent = 'Podaj prawidłowy adres e-mail zawierający "@" i ".".';
+                isValid = false;
+            }
+
+            const telefonPattern = /^\d{3}-\d{3}-\d{3}$/;
+            if (!telefonPattern.test(telefon)) 
+            {
+                telefonErrorDiv.textContent = 'Numer telefonu musi mieć format XXX-XXX-XXX i składać się z 9 cyfr.';
+                isValid = false;
+            } 
+            else 
+            {
+                telefonErrorDiv.textContent = 'Numer telefonu jest poprawny.';
+                telefonErrorDiv.className = 'success';
+            }
+            if (isValid) 
+            {
+                alert(`Imię: ${imie}\nE-mail: ${email}\nNumer telefonu: ${telefon}\nWiadomość: ${wiadomosc}`);
+            }
+        });
+    </script>
+</body>
+</html>
